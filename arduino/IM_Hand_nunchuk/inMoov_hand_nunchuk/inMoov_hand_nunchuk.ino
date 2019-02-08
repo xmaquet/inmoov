@@ -9,14 +9,13 @@ Servo index; //l'index => 1
 Servo major; //le majeur => 2
 Servo medium;//l'annulaire => 3
 Servo rikiki;//l'auriculaire => 4
-Servo wrist;//le poignet => pas d'index, il est géré par X
+Servo wrist;//le poignet => 5 et géré par X
 
-//String fingers[5] = {"thumb","index","major","medium","rikiki"};
 String finger_name[5] = {"pouce","index","majeur","annulaire","auriculaire"};
 //Définitions des valeurs initiales
 ///////////////////////////////////
-int finger_min[5] = {10,0,0,0,0};
-int finger_max[5] = {170,180,180,180,180};
+int finger_min[5] = {25,10,10,10,10};
+int finger_max[5] = {140,170,170,170,145};
 int finger_rest[5] = {90,90,90,90,90};
 //sens de fonctionnement des servos 0=normal 1=reverse
 int finger_rev[5] = {0,0,0,0,0};
@@ -38,7 +37,7 @@ thumb.attach(3);
 //index.attach(5);
 //major.attach(6);
 //medium.attach(9);
-//rikiki.attach(10);
+rikiki.attach(10);
 //wrist.attach(11);
 
 ////position de repos
@@ -46,16 +45,13 @@ thumb.write(finger_rest[0]);
 //index.write(index_rest);
 //major.write(major_rest);
 //medium.write(medium_rest);
-//rikiki.write(rikiki_rest);
+rikiki.write(finger_rest[4]);
 //wrist.write(wrist_rest);
 
   
 Serial.begin(9600);
 Wire.begin();
 nunchuk_init();
-
-
-delay(1);
 }
 
 // LOOP *********************************
@@ -66,7 +62,7 @@ void loop() {
         int y = nunchuk_joystickY();    //joystick Y position
          boolean z = nunchuk_buttonZ();  //z button status
          boolean c = nunchuk_buttonC();  //c button status
-        delay(1);
+        delay(10);
         rotator(c,z); //écoute Z et C pour rotation de doigts
         int activeFinger = getActiveFinger(finger); //doigt actif
         //on travaille sur Y pour ouvrir ou fermer un doigt
@@ -89,7 +85,7 @@ void loop() {
  
 int moveFinger (int finger, int action_rest, int action_max, int action_min, int action_rev, int value){
   if (value > 0) {
-    action_rest += 1;
+    action_rest += 4;
     if (action_rest > action_max) {action_rest = action_max ;}
     switch (finger){
         case 0:
@@ -106,6 +102,7 @@ int moveFinger (int finger, int action_rest, int action_max, int action_min, int
         medium.write(action_rest);
         break;
         case 4:
+        Serial.println(String(finger) + "->" + String(action_rest));
         rikiki.write(action_rest);
         break;
         case 5:
@@ -114,7 +111,7 @@ int moveFinger (int finger, int action_rest, int action_max, int action_min, int
     }
   }
   if (value < 0) {
-    action_rest -= 1;
+    action_rest -= 4;
     if (action_rest < action_min) {action_rest = action_min ;}
     switch (finger){
         case 0:
@@ -131,6 +128,7 @@ int moveFinger (int finger, int action_rest, int action_max, int action_min, int
         medium.write(action_rest);
         break;
         case 4:
+        Serial.println(String(finger) + "->" + String(action_rest));
         rikiki.write(action_rest);
         break;
         case 5:
