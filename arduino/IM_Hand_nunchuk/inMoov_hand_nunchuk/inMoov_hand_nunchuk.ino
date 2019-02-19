@@ -14,11 +14,14 @@ Servo wrist;//le poignet => 5 et géré par X
 String finger_name[5] = {"pouce","index","majeur","annulaire","auriculaire"};
 //Définitions des valeurs initiales
 ///////////////////////////////////
-int finger_min[5] = {25,10,10,10,10};
-int finger_max[5] = {140,170,170,170,145};
+int finger_min[5] = {5,10,10,10,25};
+int finger_max[5] = {180,170,170,170,165};
 int finger_rest[5] = {90,90,90,90,90};
 //sens de fonctionnement des servos 0=normal 1=reverse
-int finger_rev[5] = {0,0,0,0,0};
+int finger_rev[5] = {1,1,1,1,1};
+
+//vitesse des servos : entre 1 (lent) à 10 (rapide) ; 3 est une bonne valeur à priori
+int servo_speed = 1 ;
 
 //gestion du 'rotateur' pour les doigts : à chaque appui sur Z on change de doigt
 int finger = 0; //le pouce est le doigt activé au démarrage
@@ -34,19 +37,19 @@ int wrist_rev = 0;
 void setup() {
 // attacher les servos 
 thumb.attach(3);
-//index.attach(5);
-//major.attach(6);
-//medium.attach(9);
+index.attach(5);
+major.attach(6);
+medium.attach(9);
 rikiki.attach(10);
-//wrist.attach(11);
+wrist.attach(11);
 
 ////position de repos
 thumb.write(finger_rest[0]);
-//index.write(index_rest);
-//major.write(major_rest);
-//medium.write(medium_rest);
+index.write(finger_rest[1]);
+major.write(finger_rest[2]);
+medium.write(finger_rest[3]);
 rikiki.write(finger_rest[4]);
-//wrist.write(wrist_rest);
+wrist.write(wrist_rest);
 
   
 Serial.begin(9600);
@@ -67,76 +70,114 @@ void loop() {
         int activeFinger = getActiveFinger(finger); //doigt actif
         //on travaille sur Y pour ouvrir ou fermer un doigt
         if (y > 40 || y < -40) {
-          int rest = moveFinger (activeFinger,
+          int rest = moveDevice (activeFinger,
                    finger_rest[activeFinger],
                    finger_max[activeFinger],
                    finger_min[activeFinger],
-                   finger_rev[activeFinger],y);
+                   finger_rev[activeFinger],
+                   servo_speed,
+                   y);
 
           finger_rest[activeFinger] = rest;
         }
         //on travaille sur X pour tourner le poignet
-//        if (x > 40 || x < -40) {
-//          setMove (5, wrist_rest, wrist_max, wrist_min, wrist_rev, x);
-//        }
+        if (x > 40 || x < -40) {
+          int rest = moveDevice (5,
+                   finger_rest[wrist_rest],
+                   finger_max[wrist_max],
+                   finger_min[wrist_min],
+                   finger_rev[wrist_rev],
+                   servo_speed,
+                   x);
+
+          wrist_rest = rest ;
+        }
             
         }
   }
  
-int moveFinger (int finger, int action_rest, int action_max, int action_min, int action_rev, int value){
+int moveDevice (int device, int dev_rest, int dev_max, int dev_min, int dev_rev, int servo_speed, int value){
   if (value > 0) {
-    action_rest += 4;
-    if (action_rest > action_max) {action_rest = action_max ;}
-    switch (finger){
+    
+    if (dev_rev == 0) { //si le device est inversé on décrémente
+      dev_rest += servo_speed;
+    }
+    else {
+      dev_rest -= servo_speed;
+    }
+    
+    
+    if (dev_rest > dev_max) {dev_rest = dev_max ;} // ne pas dépasser les valeurs limites !!
+    else if (dev_rest < dev_min) {dev_rest = dev_min ;}
+
+    
+    switch (device){
         case 0:
-        Serial.println(String(finger) + "->" + String(action_rest));
-        thumb.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        thumb.write(dev_rest);
         break;
         case 1:
-        index.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        index.write(dev_rest);
         break;
         case 2:
-        major.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        major.write(dev_rest);
         break;
         case 3:
-        medium.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        medium.write(dev_rest);
         break;
         case 4:
-        Serial.println(String(finger) + "->" + String(action_rest));
-        rikiki.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        rikiki.write(dev_rest);
         break;
         case 5:
-        wrist.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        wrist.write(dev_rest);
         break;
     }
   }
   if (value < 0) {
-    action_rest -= 4;
-    if (action_rest < action_min) {action_rest = action_min ;}
-    switch (finger){
+
+        if (dev_rev == 0) { //si le device est inversé on incrémente
+      dev_rest -= servo_speed;
+    }
+    else {
+      dev_rest += servo_speed;
+    }
+    
+    if (dev_rest > dev_max) {dev_rest = dev_max ;} // ne pas dépasser les valeurs limites !!
+    else if (dev_rest < dev_min) {dev_rest = dev_min ;}
+    
+    switch (device){
         case 0:
-        Serial.println(String(finger) + "->" + String(action_rest));
-        thumb.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        thumb.write(dev_rest);
         break;
         case 1:
-        index.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        index.write(dev_rest);
         break;
         case 2:
-        major.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        major.write(dev_rest);
         break;
         case 3:
-        medium.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        medium.write(dev_rest);
         break;
         case 4:
-        Serial.println(String(finger) + "->" + String(action_rest));
-        rikiki.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        rikiki.write(dev_rest);
         break;
         case 5:
-        wrist.write(action_rest);
+        Serial.println(String(device) + "->" + String(dev_rest));
+        wrist.write(dev_rest);
         break;
     }
   }
-  return action_rest;
+  return dev_rest;
 }
 
 
@@ -166,7 +207,7 @@ void rotator(boolean c, boolean z){//gestion du rotateur de doigt, activé par Z
             if ( z == 1 && reAct == 0){
               //Serial.println(z);
               printActiveFinger(finger);
-              delay(1);
+              delay(10);
               reAct = 1;
             }
             if ( z == 0 && reAct == 1){
@@ -180,7 +221,7 @@ void rotator(boolean c, boolean z){//gestion du rotateur de doigt, activé par Z
             if ( c == 1 && reAct == 0 ) {
               int active_finger = getActiveFinger(finger);
               printActiveFinger(active_finger);
-              delay(1);}
+              delay(10);}
 }
 
 int getActiveFinger (int finger){
