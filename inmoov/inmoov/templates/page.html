@@ -23,7 +23,7 @@
         <!-- ============================================================== -->
          <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="/dashboard">InMoov Control Lab</a>
+                <a class="navbar-brand" href="/dashboard">InMoov Lab</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -90,12 +90,45 @@ John Abraham</h5>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav flex-column">
                             <li class="nav-divider">
-                                Contrôle direct
+                                Tester
                             </li>
-                            	
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#mnuAction" aria-controls="mnuAction"><i class=" fas fa-cog"></i>Actionner</a>
+                                <div id="mnuAction" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        {% block mnuAction %}{% endblock %}
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#mnuQuery" aria-controls="mnuQuery"><i class=" fas fa-question"></i>Interroger</a>
+                                <div id="mnuQuery" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        {% block mnuQuery %}{% endblock %}
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#mnuExec" aria-controls="mnuExec"><i class=" fas fa-rocket"></i>Exécuter</a>
+                                <div id="mnuExec" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        {% block mnuExec %}{% endblock %}
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-divider">
+                                Programmer
+                            </li>
+                            <li class="nav-item">
+                                            <a class="nav-link" href="/admin" title="Base de données">Configurer</a>
+                                        </li>
+                            <li class="nav-divider">
+                                Services
+                            </li>	
                             <li class="nav-divider">
                                 Paramètres
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link collapsed" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-admin" aria-controls="submenu-admin"><i class="fas fa-fw fa-cogs"></i>Configuration</a>
                                 <div id="submenu-admin" class="submenu collapse" style="">

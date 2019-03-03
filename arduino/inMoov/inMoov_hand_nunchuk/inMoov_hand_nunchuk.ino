@@ -21,7 +21,7 @@ int finger_rest[5] = {90,90,90,90,90};
 int finger_rev[5] = {1,1,1,1,1};
 
 //vitesse des servos : entre 1 (lent) à 10 (rapide) ; 3 est une bonne valeur à priori
-int servo_speed = 1 ;
+int servo_speed = 3 ;
 
 //gestion du 'rotateur' pour les doigts : à chaque appui sur Z on change de doigt
 int finger = 0; //le pouce est le doigt activé au démarrage

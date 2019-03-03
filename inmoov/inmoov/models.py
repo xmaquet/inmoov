@@ -210,6 +210,10 @@ class Device(models.Model):
     index = models.PositiveIntegerField(
         null=True,
         help_text="combiné au préfixe pour adressage")
+    orderType = models.ForeignKey(
+        'OrderType',
+        on_delete = models.CASCADE,
+        null = True,)
     def __str__(self):
         return self.title
     def key(self):
@@ -406,10 +410,6 @@ class Function(models.Model):
 class Order(models.Model):
     class Meta:
         verbose_name = 'Ordre'
-    orderType = models.ForeignKey(
-        'OrderType',
-        on_delete = models.CASCADE,
-        null = True,)
     device = models.ForeignKey(
         'Device',
         on_delete = models.CASCADE,
