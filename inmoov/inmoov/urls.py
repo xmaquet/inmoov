@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from inmoov.views import dashboard
+from inmoov.views import dashboard,power
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('^$', dashboard),
     url('^dashboard$', dashboard),
+    url('^power$', power),
 ]

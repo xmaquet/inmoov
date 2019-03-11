@@ -27,7 +27,7 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                <!--<div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-right-top">
                         <li class="nav-item dropdown notification">
                             <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
@@ -56,7 +56,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <!--
+                        
                         <li class="nav-item dropdown nav-user">
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/static/assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
@@ -69,9 +69,9 @@ John Abraham</h5>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
-                        </li> -->
+                        </li> 
                     </ul>
-                </div>
+                </div> --> 
             </nav>
         </div>
         <!-- ============================================================== -->
@@ -93,7 +93,7 @@ John Abraham</h5>
                                 Tester
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#mnuAction" aria-controls="mnuAction"><i class=" fas fa-cog"></i>Actionner</a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#mnuAction" aria-controls="mnuAction" title="Les actionneurs"><i class=" fas fa-cog"></i>Actionner</a>
                                 <div id="mnuAction" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         {% block mnuAction %}{% endblock %}
@@ -101,7 +101,7 @@ John Abraham</h5>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#mnuQuery" aria-controls="mnuQuery"><i class=" fas fa-question"></i>Interroger</a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#mnuQuery" aria-controls="mnuQuery" title="Les senseurs"><i class=" fas fa-question"></i>Interroger</a>
                                 <div id="mnuQuery" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         {% block mnuQuery %}{% endblock %}
@@ -109,7 +109,7 @@ John Abraham</h5>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#mnuExec" aria-controls="mnuExec"><i class=" fas fa-rocket"></i>Exécuter</a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#mnuExec" aria-controls="mnuExec" title="Lancer des séquences"><i class=" fas fa-rocket"></i>Exécuter</a>
                                 <div id="mnuExec" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         {% block mnuExec %}{% endblock %}
@@ -120,29 +120,21 @@ John Abraham</h5>
                                 Programmer
                             </li>
                             <li class="nav-item">
-                                            <a class="nav-link" href="/admin" title="Modéliser InMoov">Configurer</a>
+                                            <a class="nav-link" href="/admin" title="Modéliser InMoov"><i class=" fas fa-database"></i>Configurer</a>
                             </li>
                             <li class="nav-item">
-                                            <a class="nav-link" href="/gesture" title="Créer des séquences de gestes">Gestuelle</a>
+                                            <a class="nav-link" href="/gesture" title="Créer des séquences de gestes"><i class=" fas fa-handshake"></i>Gestuelle</a>
                             </li>
                             <li class="nav-divider">
                                 Services
-                            </li>	
-                            <li class="nav-divider">
-                                Paramètres
                             </li>
-
+                             <li class="nav-divider">
+                                Energie
+                            </li>
                             <li class="nav-item">
-                                <a class="nav-link collapsed" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-admin" aria-controls="submenu-admin"><i class="fas fa-fw fa-cogs"></i>Configuration</a>
-                                <div id="submenu-admin" class="submenu collapse" style="">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/admin" title="Base de données">Modélisation</a>
-                                        </li>
-                                        
-                                    </ul>
-                                </div>
-                            </li>
+                                            <a class="nav-link" href="/power" title="Lignes d'alimentation"><i class=" fas fa-"></i>Alimentations</a>
+                            </li>	
+                            
                         </ul>
                     </div>
                 </nav>

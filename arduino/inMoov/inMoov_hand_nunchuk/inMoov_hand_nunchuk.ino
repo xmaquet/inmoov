@@ -14,8 +14,8 @@ Servo wrist;//le poignet => 5 et géré par X
 String finger_name[5] = {"pouce","index","majeur","annulaire","auriculaire"};
 //Définitions des valeurs initiales
 ///////////////////////////////////
-int finger_min[5] = {5,10,10,10,25};
-int finger_max[5] = {180,170,170,170,165};
+int finger_min[5] = {50,30,15,10,70};
+int finger_max[5] = {160,160,170,130,165};
 int finger_rest[5] = {90,90,90,90,90};
 //sens de fonctionnement des servos 0=normal 1=reverse
 int finger_rev[5] = {1,1,1,1,1};

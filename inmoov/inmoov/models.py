@@ -21,7 +21,12 @@ class Part(models.Model):
 class Controler(models.Model):
     class Meta:
         verbose_name = 'contrôleur'
-        
+    part = models.ForeignKey(
+        'Part',
+        verbose_name='Partie',
+        on_delete=models.CASCADE,
+        null=True,
+        )    
     title = models.CharField(
         max_length = 50,
         verbose_name = 'intitulé',
@@ -60,6 +65,7 @@ class ControlerType(models.Model):
         blank=True,
         null=True,)
     maxDigitalPins = models.PositiveIntegerField()
+    maxPWMPins = models.PositiveIntegerField()
     maxAnalogPins = models.PositiveIntegerField()
     def __str__(self):
         return self.brand +" "+self.model
@@ -211,9 +217,10 @@ class Device(models.Model):
         null=True,
         help_text="combiné au préfixe pour adressage")
     orderType = models.ForeignKey(
-        'OrderType',
+        'orderType',
         on_delete = models.CASCADE,
-        null = True,)
+        null = True,
+        verbose_name='type d\'ordre')
     def __str__(self):
         return self.title
     def key(self):
@@ -288,7 +295,7 @@ class ServoType(models.Model):
     
 class SpeedClass(models.Model):
     class Meta:
-        verbose_name = 'classe de vitesse'
+        verbose_name = '(Servo) classe de vitesse'
     title = models.CharField(
         max_length = 50,
         blank = False,
@@ -303,37 +310,13 @@ class SpeedClass(models.Model):
         blank = False,
         null = True,
         verbose_name = 'unité de mouvement')
+    def __str__(self):
+        return self.title
     def key(self):
         key = "speedClass" + str(self.id) 
         return key
     
-class PowerLine(models.Model):
-    class Meta:
-        verbose_name = '(Alimentation) ligne'
-    
-    title = models.CharField(
-        max_length=50,
-        verbose_name = "intitulé",
-        )
-    code = models.CharField(
-        max_length=20
-        )
-    maxCurrent = models.DecimalField(
-        max_digits=5,
-        decimal_places=1,
-        help_text='unité = A',
-         verbose_name='courant maximal prévu',
-         null=True,
-         blank=False,
-         default=0,)
-       
-        
-    def __str__(self):
-        return self.title
-    
-    def key(self):
-        key = "powerLine" + str(self.id) 
-        return key
+
     
 class SensorType(models.Model):
     class Meta:
@@ -398,6 +381,7 @@ class Function(models.Model):
         )
     part = models.ForeignKey(
         'Part',
+        verbose_name='Partie',
         on_delete=models.CASCADE,
         null=True,
         )
@@ -405,6 +389,24 @@ class Function(models.Model):
         return self.title
     def key(self):
         key = "function" + str(self.id) 
+        return key
+
+class PowerLine(Function):
+    class Meta:
+        verbose_name = '(Alimentation) ligne'
+    maxCurrent = models.DecimalField(
+        max_digits=5,
+        decimal_places=1,
+        help_text='unité = A',
+         verbose_name='courant maximal prévu',
+         null=True,
+         blank=False,
+         default=0,)
+    def __str__(self):
+        return self.title
+    
+    def key(self):
+        key = "powerLine" + str(self.id) 
         return key
     
 class Order(models.Model):

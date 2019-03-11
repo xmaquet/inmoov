@@ -5,3 +5,6 @@ from datetime import datetime
 
 def dashboard(request):
     return render(request,'dashboard.html')
+
+def power(request):
+    return render(request,'energy/power.html')
