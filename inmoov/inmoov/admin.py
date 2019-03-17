@@ -21,6 +21,12 @@ class PartAdmin(admin.ModelAdmin):
     
 class ServoAdmin(admin.ModelAdmin):
     list_display = ('title','code','pinNum','prefix','index','orderType','servoType','rev','toggle','min','max')
+
+class CommandAdmin(admin.ModelAdmin):
+    list_display = ('title','function','value','speedFactor')
+    
+class RelayAdmin(admin.ModelAdmin):
+    list_display = ('title','controler','pinNum','prefix','orderType','closeLevel')
     
 admin.site.register(Part,PartAdmin)
 admin.site.register(Controler, ControlerAdmin)
@@ -31,3 +37,7 @@ admin.site.register(Servo,ServoAdmin)
 admin.site.register(ServoType)
 admin.site.register(SpeedClass)
 admin.site.register(OrderType)
+admin.site.register(Command,CommandAdmin)
+admin.site.register(Relay,RelayAdmin)
+admin.site.register(Serial)
+admin.site.register(TcpIp)

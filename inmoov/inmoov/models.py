@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from Scripts.miniterm import key_description
+from django.core.validators import MaxValueValidator, MinValueValidator
+from unittest.util import _MAX_LENGTH
+from django.core import validators
+
 
 class Part(models.Model):
     class Meta:
@@ -32,6 +35,12 @@ class Controler(models.Model):
         verbose_name = 'intitulé',
         blank =False,
         null = False)
+    sketchName = models.CharField(
+        max_length = 50,
+        verbose_name = 'Nom du sketch',
+        blank = True,
+        null = True,
+        help_text = 'nom donné au programme du contrôleur')
     code = models.CharField(
         max_length = 20,
         blank = False,
@@ -85,7 +94,7 @@ class Interface(models.Model):
         'Controler',
         on_delete=models.CASCADE,
         null=True,
-        verbose_name='interface',
+        verbose_name='Contrôleur',
         )
     
 class Serial(Interface):
@@ -186,11 +195,16 @@ class Serial(Interface):
     
 class TcpIp(Interface):
     class Meta:
-        verbose_name = 'interface TCP/IP'
+        verbose_name = '(TCP/IP) interface'
         
 class Device(models.Model):
     class Meta:
         verbose_name = 'équipement'
+    pinTypeList = (
+        ('dig','Digitale'),
+        ('ana','Analogique'),
+        ('unk', 'indéterminé')
+        )
     controler = models.ForeignKey(
         'Controler',
         on_delete=models.CASCADE,
@@ -207,6 +221,13 @@ class Device(models.Model):
         blank=True,
         verbose_name='n° de broche',
         help_text='donné à titre indicatif',)
+    pinType = models.CharField(
+        choices = pinTypeList,
+        null = True,
+        default = 'unk',
+        max_length = 3,
+        verbose_name ='type de broche'
+        )
     prefix = models.CharField(
         max_length=10,
         null=True,
@@ -215,7 +236,7 @@ class Device(models.Model):
         verbose_name='préfixe pour l\'adressage',)
     index = models.PositiveIntegerField(
         null=True,
-        help_text="combiné au préfixe pour adressage")
+        help_text="dans les contrôleurs, les équipements sont adressés dans un tableau gérant les broches")
     orderType = models.ForeignKey(
         'orderType',
         on_delete = models.CASCADE,
@@ -355,8 +376,8 @@ class Relay(Device):
     class Meta:
         verbose_name = 'relais'
     levelList = (
-        ('Low','Niveau bas'),
-        ('High','Niveau haut'),
+        ('Low','Niveau bas (0)'),
+        ('High','Niveau haut (1)'),
         )
     closeLevel = models.CharField(
         max_length=5,
@@ -385,6 +406,10 @@ class Function(models.Model):
         on_delete=models.CASCADE,
         null=True,
         )
+    device = models.ForeignKey(
+        'Device',
+        on_delete = models.CASCADE,
+        null = True,)
     def __str__(self):
         return self.title
     def key(self):
@@ -409,23 +434,6 @@ class PowerLine(Function):
         key = "powerLine" + str(self.id) 
         return key
     
-class Order(models.Model):
-    class Meta:
-        verbose_name = 'Ordre'
-    device = models.ForeignKey(
-        'Device',
-        on_delete = models.CASCADE,
-        null = True,)
-    value = models.PositiveIntegerField(
-        null = True,
-        blank = True,
-        verbose_name = 'valeur',
-        help_text = 'valeur envoyée')
-    def __str__(self):
-        return self.orderType + " " + self.device
-    def key(self):
-        key = "order" + str(self.id) 
-        return key
     
 class OrderType(models.Model):
     class Meta:
@@ -462,12 +470,19 @@ class Command(models.Model):
         'Function',
         on_delete = models.CASCADE,
         null = True,)
-    order = models.ForeignKey(
-        'Order',
-        on_delete = models.CASCADE,
-        null = True,)
+    value = models.PositiveIntegerField(
+        null = True,
+        blank = True,
+        verbose_name = 'valeur',
+        help_text = 'valeur envoyée ou pourcentage de la course')
+    speedFactor = models.PositiveIntegerField(
+        null = False,
+        default = 0,
+        validators=[MaxValueValidator(10)],
+        verbose_name = 'Facteur de vitesse',
+        help_text = '0:sans effet | 1:vitesse normale | 2 à 10:facteur de réduction')
     def __str__(self):
-        return "exécute "+ self.order + "pour " + self.function
+        return self.title
     def key(self):
         key = "command" + str(self.id) 
         return key 
