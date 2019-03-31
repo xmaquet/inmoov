@@ -62,28 +62,7 @@ void parseIncoming(String text){//interprétation de la chaîne reçue entre [] 
   char ordJson[text.length() + 1] ;
   int len = text.length();
   text.toCharArray(ordJson,len);
-      //StaticJsonDocument<200> doc;
-      DynamicJsonDocument doc(512);
-      //Serial.println(doc.capacity());
-      DeserializationError err = deserializeJson(doc, ordJson);
-      if (err) {
-              Serial.print(F("deserializeJson() failed with code "));
-              Serial.println(err.c_str());
-              }
-      JsonObject obj = doc.as<JsonObject>();
-      // Loop through all the key-value pairs in obj
-        for (JsonPair p : obj) {
-        p.key() ;// is a JsonString
-        p.value() ;// is a JsonVariant
-        }
-        
-      //obj est l'objet qui contient la représentation du json reçu
-      if (obj.containsKey("order")){
-        String order = obj["order"];
-        Serial.println(order);
-        String code = obj["code"];
-        Serial.println(code);
-      }
+      
           
 }
 
